@@ -1,0 +1,87 @@
+Sub Stock_Market_Analysis()
+
+Dim ws As Worksheet
+For Each ws In Worksheets
+
+Dim Ticker As String
+Dim Yearly_Change As Double
+ Yearly_Change = 0
+Dim Opening_Year As Double
+ Opening_Year = 0
+Dim Closing_Year As Double
+ Closing_Year = 0
+Dim Percent_Change As Double
+ Percent_Change = 0
+Dim Total_Volume As Double
+ Total_Volume = 0
+Dim RowCount As Long
+ RowCount = 2
+Dim LastRow As Long
+ LastRow = ws.Cells(Rows.Count, 1).End(xlUp).Row
+
+ws.Cells(1, 9).Value = "Ticker"
+ws.Cells(1, 10).Value = "Yearly Change"
+ws.Cells(1, 11).Value = "Percent Change"
+ws.Cells(1, 12).Value = "Total Stock Volume"
+
+
+For i = 2 To LastRow
+
+If ws.Cells(i, 1).Value <> ws.Cells(i - 1, 1).Value Then
+ Opening_Year = ws.Cells(i, 3).Value
+
+
+
+Total_Volume = ws.Cells(RowCount, 12).Value
+Total_Volume = Total_Volume + ws.Cells(1, 7)
+
+
+If ws.Cells(i, 1).Value <> ws.Cells(i + 1, 1).Value Then
+ ws.Cells(RowCount, 9).Value = ws.Cells(i, 1).Value
+ 
+ 
+ 
+If ws.Cells(i, 1).Value <> ws.Cells(i + 1, 1).Value Then
+    ws.Cells(RowCount, 9).Value = ws.Cells(i, 1).Value
+    Closing_Year = ws.Cells(i, 6).Value
+
+    Yearly_Change = Closing_Year - Opening_Year
+    ws.Cells(RowCount, 10).Value = Yearly_Change
+    
+End If
+
+If Yearly_Change >= 0 Then
+    ws.Cells(RowCount, 10).Interior.ColorIndex = 4
+Else
+    ws.Cells(RowCount, 10).Interior.ColorIndex = 3
+End If
+
+If Opening_Year = 0 And Closing_Year = 0 Then
+    
+    Percent_Change = "No change"
+    ws.Cells(RowCount, 11).Value = Percent_Change
+    ws.Cells(RowCount, 11).NumberFormat = "0.00%"
+    
+Else
+    Percent_Change = Yearly_Change / Opening_Year
+    ws.Cells(RowCount, 11).Value = Percent_Change
+    ws.Cells(RowCount, 11).NumberFormat = "0.00%"
+End If
+
+
+RowCount = RowCount + 1
+
+
+Total_Volume = 0
+Opening_Year = 0
+Closing_Year = 0
+Yearly_Change = 0
+Percent_Change = 0
+
+End If
+
+Next i
+
+Next ws
+
+End Sub
